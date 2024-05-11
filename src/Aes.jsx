@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import "./Aes.scss";
 
 function App() {
   const [prediction, setPrediction] = useState("");
@@ -83,7 +84,16 @@ function App() {
         })
         .then((response) => {
           const { prediction } = response.data;
-          if (prediction !== "No hands detected") {
+          if (prediction === "No hands detected") {
+            // Check if the last character in currentSentence is not a space
+            if (
+              currentSentence
+                .trim()
+                .charAt(currentSentence.trim().length - 1) !== " "
+            ) {
+              setCurrentSentence((prev) => `${prev} `); // Add a space
+            }
+          } else {
             setPrediction(prediction);
             handleSentenceUpdate(prediction);
           }
@@ -101,35 +111,32 @@ function App() {
   const handleStartStopPredicting = () => setIsPredicting(!isPredicting);
 
   return (
-    <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        textAlign: "center",
-        padding: "20px",
-      }}
-    >
-      <h1>Hand Sign Detection</h1>
-      <video
-        ref={videoRef}
-        width="640"
-        height="480"
-        autoPlay
-        playsInline
-        muted
-        style={{ border: "2px solid black" }}
-      ></video>
-      <button
-        onClick={handleStartStopPredicting}
-        style={{ margin: "10px", padding: "10px" }}
-      >
-        {isPredicting ? "Stop Predicting" : "Start Predicting"}
-      </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {prediction && (
-        <p style={{ color: "green" }}>Last Prediction: {prediction}</p>
-      )}
-      <p style={{ color: "blue" }}>Current Sentence: {currentSentence}</p>
-    </div>
+    <>
+      <div className="container">
+        <div className="video-container">
+          <video
+            ref={videoRef}
+            width="640"
+            height="480"
+            autoPlay
+            playsInline
+            muted
+            className="video"
+          ></video>
+          <button
+            onClick={handleStartStopPredicting}
+            className="predict-button"
+          >
+            {isPredicting ? "Stop Predicting" : "Start Predicting"}
+          </button>
+        </div>
+        {error && <p className="error">{error}</p>}
+        {prediction && (
+          <p className="prediction">Last Prediction: {prediction}</p>
+        )}
+        <p className="sentence">Current Sentence: {currentSentence}</p>
+      </div>
+    </>
   );
 }
 

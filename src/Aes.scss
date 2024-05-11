@@ -1,0 +1,36 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  margin-top: 3rem;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    video {
+      box-shadow: 0px 10px 10px rgb(170, 162, 162);
+      border-radius: 20px;
+      margin: 1.3rem;
+    }
+
+    .predict-button {
+      width: 7rem;
+      height: 2.5rem;
+      border: none;
+      color: white;
+      background-color: #53b099;
+      border-radius: 5px;
+      font-weight: 300;
+      padding: 0.4rem;
+
+      &:hover {
+        background-color: #307e6a;
+      }
+    }
+  }
+}
