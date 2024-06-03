@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./Aes.scss";
 
-function App() {
+function HomeComponent() {
   const [prediction, setPrediction] = useState("");
   const [currentSentence, setCurrentSentence] = useState("");
   const [error, setError] = useState("");
@@ -46,7 +46,7 @@ function App() {
 
   useEffect(() => {
     if (isPredicting) {
-      intervalRef.current = setInterval(captureAndPredict, 1500);
+      intervalRef.current = setInterval(captureAndPredict, 1000); // Change interval to 3000ms
       return () => clearInterval(intervalRef.current);
     }
   }, [isPredicting]);
@@ -84,16 +84,7 @@ function App() {
         })
         .then((response) => {
           const { prediction } = response.data;
-          if (prediction === "No hands detected") {
-            // Check if the last character in currentSentence is not a space
-            if (
-              currentSentence
-                .trim()
-                .charAt(currentSentence.trim().length - 1) !== " "
-            ) {
-              setCurrentSentence((prev) => `${prev} `); // Add a space
-            }
-          } else {
+          if (prediction !== "No hands detected") {
             setPrediction(prediction);
             handleSentenceUpdate(prediction);
           }
@@ -140,4 +131,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomeComponent;
